@@ -5,6 +5,9 @@ class WrongValueError extends Error {
   }
 }
 
+/**
+ * addValues can work as sum and as string concatenation
+ */
 function addValues(firstOperand, secondOperand) {
   const fitValues = ['string', 'number'];
   if (
@@ -17,12 +20,16 @@ function addValues(firstOperand, secondOperand) {
   return firstOperand + secondOperand;
 }
 // console.log(addValues(1, 2));
-// console.log(addValues(null, 2));
-// console.log(addValues(null, {}));
 // console.log(addValues('hello ', 'world'));
 // console.log(addValues(20, '10'));
+/**
+ * ERRORS
+ */
+// console.log(addValues({}, 'hello'));
+// console.log(addValues(null, {}));
 // console.log(addValues([], 1));
 // console.log(addValues(undefined, '123'));
+// console.log(addValues(null, 2));
 
 // =================================================
 function stringifyValue(value) {
@@ -44,6 +51,9 @@ function stringifyValue(value) {
 // console.log(stringifyValue(false));
 
 // =================================================
+/**
+ * Accepts a single boolean argument and returns its inverted value. If the argument is not a boolean, it should throw an error.
+ */
 function invertBoolean(value) {
   if (typeof value !== 'boolean') {
     throw new WrongValueError('invertBoolean');
@@ -53,6 +63,9 @@ function invertBoolean(value) {
 }
 // console.log(invertBoolean(false));
 // console.log(invertBoolean(true));
+/**
+ * ERRORS
+ */
 // console.log(invertBoolean(1));
 // console.log(invertBoolean({}));
 // console.log(invertBoolean([]));
@@ -78,10 +91,13 @@ function convertToNumber(value) {
 // console.log(convertToNumber('1'));
 // console.log(convertToNumber('123sasd'));
 // console.log(convertToNumber(null));
-// console.log(convertToNumber({}));
-// console.log(convertToNumber(undefined));
-// console.log(convertToNumber(Symbol(123)));
+/**
+ * ERRORS
+ */
 // console.log(convertToNumber(new Date()));
+// console.log(convertToNumber({}));
+// console.log(convertToNumber(Symbol(123)));
+// console.log(convertToNumber(undefined));
 
 // =================================================
 class TypeConvertor {
