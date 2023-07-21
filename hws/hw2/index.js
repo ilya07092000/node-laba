@@ -84,7 +84,7 @@ function convertToNumber(value) {
 // console.log(convertToNumber(new Date()));
 
 // =================================================
-class ConvertToType {
+class TypeConvertor {
   constructor() {
     this._convertors = [];
   }
@@ -95,27 +95,27 @@ class ConvertToType {
 
   convertType(value, desiredType) {
     const convertor = this._convertors.find(conv =>
-      conv.isSuitableConverter(desiredType),
+      conv.isSuitableConvertor(desiredType),
     );
 
     if (!convertor) {
-      throw new Error('No Converter For This Type');
+      throw new Error('No Converter For This Desired Type');
     }
-    return convertor.convert(value, desiredType);
+    return convertor.convert(value);
   }
 }
 
-class TypeConvertor {
+class BasicConvertor {
   constructor(selfType) {
     this._selfType = selfType;
-    this._convertTypes = []; // define to what types we can convert
+    this._supportTypes = []; // define from what types we can convert
   }
 
   /**
-   * check whether this class suitable for value type
+   * check whether this class suitable for desired type type
    */
-  isSuitableConverter(type) {
-    if (type === this._selfType) {
+  isSuitableConvertor(desiredType) {
+    if (desiredType === this._selfType) {
       return true;
     }
     return false;
@@ -125,40 +125,47 @@ class TypeConvertor {
    * check wthether this value can be converted
    */
   canConvert(value) {
-    if (this._convertTypes.includes(typeof value)) {
+    if (this._supportTypes.includes(typeof value)) {
       return true;
     }
     return false;
   }
 
-  convert() {
-    throw new Error('Method Not Implemented');
+  convert(value) {
+    if (!this.canConvert(value)) {
+      throw new WrongValueError(this.constructor.name);
+    }
   }
 }
 
-class StringConvertor extends TypeConvertor {
+class StringConvertor extends BasicConvertor {
   constructor() {
     super('string');
-    this._convertTypes = ['string', 'number', 'boolean', 'symbol', 'object'];
+    this._supportTypes = [
+      'string',
+      'number',
+      'boolean',
+      'symbol',
+      'object',
+      'bigint',
+      'undefined',
+      'null',
+    ];
   }
 
   convert(value) {
-    if (!this.canConvert(value)) {
-      throw new WrongValueError('NumberConvertor');
-    }
-
+    super.convert(value);
     if (typeof value === 'object' && value !== null) {
       return JSON.stringify(value);
     }
-
     return String(value);
   }
 }
 
-class NumberConvertor extends TypeConvertor {
+class NumberConvertor extends BasicConvertor {
   constructor() {
     super('number');
-    this._convertTypes = ['string', 'number', 'boolean', 'symbol', 'bigint'];
+    this._supportTypes = ['string', 'number', 'boolean'];
   }
 
   convert(value) {
@@ -169,44 +176,60 @@ class NumberConvertor extends TypeConvertor {
   }
 }
 
-class BooleanConvertor extends TypeConvertor {
+class BooleanConvertor extends BasicConvertor {
   constructor() {
     super('boolean');
-    this._convertTypes = ['string', 'symbol', 'number'];
+    this._supportTypes = [
+      'string',
+      'symbol',
+      'number',
+      'boolean',
+      'object',
+      'undefined',
+    ];
   }
 
   convert(value) {
-    if (!this.canConvert(value)) {
-      throw new WrongValueError('NumberConvertor');
-    }
+    super.convert(value);
     return Boolean(value);
   }
 }
 
-class SymbolConvertor extends TypeConvertor {
+class SymbolConvertor extends BasicConvertor {
   constructor() {
     super('symbol');
-    this._convertTypes = ['symbol', 'string', 'number'];
+    this._supportTypes = ['symbol', 'string', 'number'];
   }
 
   convert(value) {
-    if (!this.canConvert(value)) {
-      throw new WrongValueError('NumberConvertor');
-    }
+    super.convert(value);
     return Symbol(value);
   }
 }
 
-const convertor = new ConvertToType();
+class BigIntConverter extends BasicConvertor {
+  constructor() {
+    super('bigint');
+    this._supportTypes = ['number'];
+  }
+
+  convert(value) {
+    super.convert(value);
+    return BigInt(value);
+  }
+}
+
+const convertor = new TypeConvertor();
 convertor.registerConvertor(new StringConvertor());
 convertor.registerConvertor(new NumberConvertor());
 convertor.registerConvertor(new SymbolConvertor());
 convertor.registerConvertor(new BooleanConvertor());
+convertor.registerConvertor(new BigIntConverter());
 
 // console.log(convertor.convertType('123', 'number'));
-console.log(
-  convertor.convertType({name: 'Ilya', surname: 'Ischenko'}, 'string'),
-);
+// console.log(
+//   convertor.convertType({name: 'Ilya', surname: 'Ischenko'}, 'string'),
+// );
 // console.log(
 //   convertor.convertType({name: 'Ilya', surname: 'Ischenko'}, 'boolean'),
 // );
@@ -216,6 +239,18 @@ console.log(
 // console.log(convertor.convertType(0, 'boolean'));
 // console.log(convertor.convertType(undefined, 'boolean'));
 // console.log(convertor.convertType(null, 'number'));
-// console.log(convertor.convertType(undefined, 'number'));
-// console.log(convertor.convertType({}, 'number'));
 // console.log(convertor.convertType(null, 'number'));
+// console.log(convertor.convertType('123', 'symbol'));
+// console.log(convertor.convertType(BigInt(123123213213123213123), 'string'));
+// console.log(convertor.convertType(123123123, 'bigint'));
+// console.log(convertor.convertType(Symbol('1231232adsd'), 'string'));
+// console.log(convertor.convertType(null, 'string'));
+// console.log(convertor.convertType(undefined, 'string'));
+
+/**
+ * ERROR
+ */
+// console.log(convertor.convertType('123123123', 'bigint'));
+// console.log(convertor.convertType(BigInt(123123213213123213123), 'number'));
+// console.log(convertor.convertType({}, 'number'));
+// console.log(convertor.convertType(undefined, 'number'));
