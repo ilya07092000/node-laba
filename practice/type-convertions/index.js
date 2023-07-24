@@ -36,6 +36,10 @@
 // console.log(undefined + undefined);
 // console.log(true + false);
 // console.log(+'Infinity');
+// console.log([1] + undefined);
+// console.log([1] + 1);
+// console.log({} + [] + 1);
+// console.log({} + []);
 /**
  * Symbol.toPrimitive
  */

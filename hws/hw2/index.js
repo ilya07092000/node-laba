@@ -2,7 +2,11 @@
  * addValues can work as sum and as string concatenation
  */
 function addValues(firstOperand, secondOperand) {
-  const fitValues = ['string', 'number'];
+  const fitValues = ['string', 'number', 'boolean'];
+  if (typeof firstOperand === 'boolean' && typeof secondOperand === 'boolean') {
+    return !!(firstOperand * secondOperand);
+  }
+
   if (
     !fitValues.includes(typeof firstOperand) ||
     !fitValues.includes(typeof secondOperand)
@@ -15,6 +19,10 @@ function addValues(firstOperand, secondOperand) {
 // console.log(addValues(1, 2));
 // console.log(addValues('hello ', 'world'));
 // console.log(addValues(20, '10'));
+// console.log(addValues(true, false));
+// console.log(addValues(false, false));
+// console.log(addValues(true, true));
+
 /**
  * ERRORS
  */
@@ -52,7 +60,7 @@ function invertBoolean(value) {
     throw new Error('Wrong Value Was Passed to invertBoolean function');
   }
 
-  return +value;
+  return !value;
 }
 // console.log(invertBoolean(false));
 // console.log(invertBoolean(true));
@@ -96,26 +104,17 @@ function convertToNumber(value) {
 function coerceToType(value, type) {
   const valueType = typeof value;
 
-  if (type === 'object' || (type === 'number' && valueType === 'bigint')) {
+  if (type === 'object') {
     // can not convert to object
     throw new Error(`Can Not Convert to ${type}`);
   }
 
   if (type === 'string') {
-    if (typeof value === 'object' && value !== null) {
-      return JSON.stringify(value);
-    }
-    return String(value);
+    return stringifyValue(value);
   }
 
   if (type === 'number') {
-    if (
-      (typeof value === 'object' && value !== null) ||
-      valueType === 'undefined'
-    ) {
-      throw new Error(`Can Not Convert to ${type}`);
-    }
-    return +value;
+    return convertToNumber(value);
   }
 
   if (type === 'boolean') {
@@ -124,10 +123,6 @@ function coerceToType(value, type) {
 
   if (type === 'symbol' && (valueType === 'string' || valueType === 'number')) {
     return Symbol(value);
-  }
-
-  if (type === 'bigint') {
-    return BigInt(value);
   }
 
   throw new Error('Type Can Not Be Converted');
@@ -142,16 +137,12 @@ function coerceToType(value, type) {
 // console.log(coerceToType(undefined, 'boolean'));
 // console.log(coerceToType(null, 'number'));
 // console.log(coerceToType('123', 'symbol'));
-// console.log(coerceToType(BigInt(123123213213123213123), 'string'));
-// console.log(coerceToType(123123123, 'bigint'));
 // console.log(coerceToType(Symbol('1231232adsd'), 'string'));
 // console.log(coerceToType(null, 'string'));
 // console.log(coerceToType(undefined, 'string'));
-// console.log(coerceToType('123123123', 'bigint'));
 
 /**
  * ERROR
  */
-// console.log(coerceToType(BigInt(123123213213123213123), 'number'));
 // console.log(coerceToType({}, 'number'));
 // console.log(coerceToType(undefined, 'number'));
