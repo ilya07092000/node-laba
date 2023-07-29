@@ -5,6 +5,11 @@ const addUniqueString = (arr, str) => (arr.includes(str) ? arr : [...arr, str]);
 const sortByPredicate = (predicate, arr) => arr.sort(predicate);
 const greaterThanPredicate = (a, b) => a > b;
 const makeSum = (arr = []) => arr.reduce(add, 0);
+const splitBy = (sign = '', arr) => arr.split(sign);
+const badParamsError = () => {
+  throw new Error('Bad Params');
+};
+const isObject = obj => typeof obj === 'object' && obj !== null;
 const makeSumByProp = (arr = [], property) =>
   arr.reduce((acc, curr) => add(acc, prop(property)(curr)), 0);
 const add = (x, y) => x + y;
@@ -46,13 +51,16 @@ const getDiscountedProduct = (p, discount) => {
   };
 };
 const calculateDiscountedPrice = (products = [], discount = 0) =>
-  products.map(p => getDiscountedProduct(p, discount));
+  Array.isArray(products) && typeof discount === 'number'
+    ? products.map(p => getDiscountedProduct(p, discount))
+    : badParamsError();
 // console.log(calculateDiscountedPrice(productsList, 10));
 
 /**
  * 1.2
  */
-const calculateTotalPrice = (products = []) => makeSumByProp(products, 'price');
+const calculateTotalPrice = (products = []) =>
+  Array.isArray(products) ? makeSumByProp(products, 'price') : badParamsError();
 // console.log(calculateTotalPrice(productsList));
 
 /**
@@ -63,16 +71,23 @@ const calculateTotalPrice = (products = []) => makeSumByProp(products, 'price');
  * 2.1
  */
 const getFullName = user =>
-  `${prop('firstName')(user)} ${prop('lastName')(user)}`;
+  isObject(user)
+    ? `${prop('firstName')(user)} ${prop('lastName')(user)}`
+    : badParamsError();
 // console.log(getFullName({firstName: 'Ilya', lastName: 'Ischenko'}));
 
 /**
  * 2.2
  */
-const wordsList = ['one', 'two', 'three', 'three', 'two', 'one', 'five'];
-const filterUniqueWords = (words = []) =>
-  sortByPredicate(greaterThanPredicate, words.reduce(addUniqueString, []));
-// console.log(filterUniqueWords(wordsList));
+const str = 'one two three three two one five';
+const filterUniqueWords = string =>
+  typeof string === 'string'
+    ? sortByPredicate(
+        greaterThanPredicate,
+        splitBy(' ', string).reduce(addUniqueString, []),
+      )
+    : badParamsError();
+// console.log(filterUniqueWords(str));
 
 /**
  * 2.3
@@ -109,7 +124,8 @@ const getStudentResult = student => average => ({...student, average});
 const getAverageGradePerStudent = student =>
   pipe(unary(getGrades), getAverage, getStudentResult(student))(student);
 
-const getAverageGrade = arr => arr.map(getAverageGradePerStudent);
+const getAverageGrade = arr =>
+  Array.isArray(arr) ? arr.map(getAverageGradePerStudent) : badParamsError();
 // console.log(getAverageGrade(gradesList));
 
 /**
@@ -139,6 +155,8 @@ const createCounter = () => {
  * 3.2
  */
 const repeatFunction = (fn, number) => {
+  typeof fn !== 'function' && badParamsError();
+
   fn();
   number < 0
     ? repeatFunction(fn, (number -= 1))
@@ -156,14 +174,24 @@ const repeatFunction = (fn, number) => {
  * 4.1
  */
 const calculateFactorial = (number, result = 1) =>
-  number === 1 ? result : calculateFactorial(number - 1, result * number);
+  typeof number === 'number' && typeof result === 'number'
+    ? number === 1
+      ? result
+      : calculateFactorial(number - 1, result * number)
+    : badParamsError();
 // console.log(calculateFactorial(1000));
 
 /**
  * 4.2
  */
 const power = (base, exponent, result = base) =>
-  exponent === 1 ? result : power(base, exponent - 1, result * base);
+  typeof base === 'number' &&
+  typeof exponent === 'number' &&
+  typeof result === 'number'
+    ? exponent === 1
+      ? result
+      : power(base, exponent - 1, result * base)
+    : badParamsError();
 // console.log(power(2, 3));
 // console.log(power(5, 3));
 
@@ -174,6 +202,8 @@ const power = (base, exponent, result = base) =>
  * 5.1
  */
 const lazyMap = (arr, mapFunc) => {
+  !(Array.isArray(arr) && typeof mapFunc === 'function') && badParamsError();
+
   let counter = 0;
   const arrLength = arr.length;
 
