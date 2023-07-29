@@ -1,3 +1,12 @@
+const prop = propName => obj => obj[propName];
+const makeSum = (arr = []) => arr.reduce(add, 0);
+const makeSumByProp = (arr = [], property) =>
+  arr.reduce((acc, curr) => add(acc, prop(property)(curr)), 0);
+const add = (x, y) => x + y;
+const unary =
+  fn =>
+  (...args) =>
+    fn(args[0]);
 /**
  * Task 1
  */
@@ -24,15 +33,22 @@ const productsList = [
   },
 ];
 
+const getDiscountedValue = (value, discount) => value * (discount / 100);
+const getDiscountedProduct = (p, discount) => {
+  const currPrice = prop('price')(p);
+  return {
+    ...p,
+    price: currPrice - getDiscountedValue(currPrice, discount),
+  };
+};
 const calculateDiscountedPrice = (products = [], discount = 0) =>
-  products.map(p => ({...p, price: p.price - p.price * (discount / 100)}));
+  products.map(p => getDiscountedProduct(p, discount));
 // console.log(calculateDiscountedPrice(productsList, 10));
 
 /**
  * 1.2
  */
-const calculateTotalPrice = (products = []) =>
-  products.reduce((acc, p) => acc + p.price, 0);
+const calculateTotalPrice = (products = []) => makeSumByProp(products, 'price');
 // console.log(calculateTotalPrice(productsList));
 
 /**
@@ -42,7 +58,6 @@ const calculateTotalPrice = (products = []) =>
 /**
  * 2.1
  */
-const prop = propName => obj => obj[propName];
 const getFullName = user =>
   `${prop('firstName')(user)} ${prop('lastName')(user)}`;
 // console.log(getFullName({firstName: 'Ilya', lastName: 'Ischenko'}));
@@ -51,11 +66,9 @@ const getFullName = user =>
  * 2.2
  */
 const wordsList = ['one', 'two', 'three', 'three', 'two', 'one', 'five'];
-
 const sortByPredicate = (predicate, arr) => arr.sort(predicate);
 const greaterThanPredicate = (a, b) => a > b;
 const addUniqueString = (arr, str) => (arr.includes(str) ? arr : [...arr, str]);
-
 const filterUniqueWords = (words = []) =>
   sortByPredicate(greaterThanPredicate, words.reduce(addUniqueString, []));
 // console.log(filterUniqueWords(wordsList));
@@ -90,12 +103,7 @@ const pipe =
   (...fns) =>
   input =>
     fns.reduce((mem, fn) => fn(mem), input);
-const unary =
-  fn =>
-  (...args) =>
-    fn(args[0]);
-const makeSum = (arr = []) => arr.reduce((acc, curr) => acc + curr, 0);
-const getGrades = student => student.grades;
+const getGrades = student => prop('grades')(student);
 const getAverage = (arr = []) => makeSum(arr) / arr.length;
 const getStudentResult = student => average => ({...student, average});
 const getAverageGradePerStudent = student =>
@@ -198,11 +206,11 @@ const fibonacciGenerator = () => {
   };
 };
 const fibbonaccySequence = fibonacciGenerator();
-console.log(fibbonaccySequence());
-console.log(fibbonaccySequence());
-console.log(fibbonaccySequence());
-console.log(fibbonaccySequence());
-console.log(fibbonaccySequence());
-console.log(fibbonaccySequence());
-console.log(fibbonaccySequence());
-console.log(fibbonaccySequence());
+// console.log(fibbonaccySequence());
+// console.log(fibbonaccySequence());
+// console.log(fibbonaccySequence());
+// console.log(fibbonaccySequence());
+// console.log(fibbonaccySequence());
+// console.log(fibbonaccySequence());
+// console.log(fibbonaccySequence());
+// console.log(fibbonaccySequence());
