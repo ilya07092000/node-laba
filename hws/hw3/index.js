@@ -1,4 +1,9 @@
 const prop = propName => obj => obj[propName];
+const getAverage = (arr = []) => makeSum(arr) / arr.length;
+const getDiscountedValue = (value, discount) => value * (discount / 100);
+const addUniqueString = (arr, str) => (arr.includes(str) ? arr : [...arr, str]);
+const sortByPredicate = (predicate, arr) => arr.sort(predicate);
+const greaterThanPredicate = (a, b) => a > b;
 const makeSum = (arr = []) => arr.reduce(add, 0);
 const makeSumByProp = (arr = [], property) =>
   arr.reduce((acc, curr) => add(acc, prop(property)(curr)), 0);
@@ -33,7 +38,6 @@ const productsList = [
   },
 ];
 
-const getDiscountedValue = (value, discount) => value * (discount / 100);
 const getDiscountedProduct = (p, discount) => {
   const currPrice = prop('price')(p);
   return {
@@ -66,9 +70,6 @@ const getFullName = user =>
  * 2.2
  */
 const wordsList = ['one', 'two', 'three', 'three', 'two', 'one', 'five'];
-const sortByPredicate = (predicate, arr) => arr.sort(predicate);
-const greaterThanPredicate = (a, b) => a > b;
-const addUniqueString = (arr, str) => (arr.includes(str) ? arr : [...arr, str]);
 const filterUniqueWords = (words = []) =>
   sortByPredicate(greaterThanPredicate, words.reduce(addUniqueString, []));
 // console.log(filterUniqueWords(wordsList));
@@ -104,7 +105,6 @@ const pipe =
   input =>
     fns.reduce((mem, fn) => fn(mem), input);
 const getGrades = student => prop('grades')(student);
-const getAverage = (arr = []) => makeSum(arr) / arr.length;
 const getStudentResult = student => average => ({...student, average});
 const getAverageGradePerStudent = student =>
   pipe(unary(getGrades), getAverage, getStudentResult(student))(student);
