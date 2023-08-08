@@ -6,6 +6,26 @@ const updateObjDescriptors = (obj, propNames = [], descriptorObj = {}) => {
   });
 };
 
+const handleObjChanges = (obj = {}, propNames = [], cb = () => {}) => {
+  propNames.forEach(prop => {
+    if (prop in obj) {
+      const propName = `_${prop}`;
+      obj[propName] = obj[prop];
+      Object.defineProperty(obj, prop, {
+        get() {
+          cb({method: 'get', prop, value: obj[propName]});
+          return obj[propName];
+        },
+
+        set(value) {
+          cb({method: 'set', prop, value});
+          obj[propName] = value;
+        },
+      });
+    }
+  });
+};
+
 const shallowClone = obj =>
   Object.create(
     Object.getPrototypeOf(obj),
@@ -29,9 +49,10 @@ const person = {
   updateInfo(newInfo) {
     Object.entries(newInfo).forEach(([key, value]) => {
       if (key in this) {
-        Object.defineProperty(this, key, {
-          value,
-        });
+        const propDescriptor = Object.getOwnPropertyDescriptor(this, key);
+        if (propDescriptor.writable && propDescriptor.configurable) {
+          this[key] = value;
+        }
       }
     });
   },
@@ -41,6 +62,7 @@ updateObjDescriptors(person, Object.keys(person), {writable: false});
 // console.log(Object.getOwnPropertyDescriptors(person));
 // person.firstName = 'Ilya';
 // console.log(person);
+// person.test = null;
 // person.updateInfo({firstName: 'Ilya', lastName: 'Ischenko', test: 123});
 // console.log(person);
 Object.defineProperty(person, 'address', {
@@ -191,16 +213,11 @@ const observeObject = (obj, cb = () => {}) => {
     return;
   }
 
-  return new Proxy(obj, {
-    get(_, phrase) {
-      cb(`get: ${phrase}`);
-    },
-    set(_, prop) {
-      cb(`set: ${prop}`);
-    },
-  });
+  handleObjChanges(obj, Object.keys(obj), cb);
+
+  return obj;
 };
-const personObserver = observeObject(person, params => console.log(params));
+const personObserver = observeObject(person, console.log);
 // personObserver.firstName = 'Ilya';
 // personObserver.age;
 
@@ -345,4 +362,4 @@ const validateObject = (obj, schema) => {
     return true;
   });
 };
-console.log(validateObject(objToValidate, schema));
+// console.log(validateObject(objToValidate, schema));
