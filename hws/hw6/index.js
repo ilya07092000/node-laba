@@ -81,3 +81,31 @@ function add(a, b) {
 }  
 `;
 // console.log(code);
+
+/**
+ * TASK 4
+ */
+const debounce = (func, timeout) => {
+  if (
+    typeof func !== 'function' ||
+    typeof timeout !== 'number' ||
+    timeout < 0
+  ) {
+    throw new Error('Bad Argument');
+  }
+
+  let timer;
+  return args => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(args), timeout);
+  };
+};
+
+function debouncedSearch(query) {
+  console.log('Searching for:', query);
+}
+const debouncedSearchHandler = debounce(debouncedSearch, 1000);
+const inputElement = document.getElementById('search-input');
+inputElement.addEventListener('input', event => {
+  debouncedSearchHandler(event.target.value);
+});
