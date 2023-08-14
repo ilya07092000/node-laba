@@ -104,10 +104,10 @@ function debouncedSearch(query) {
   console.log('Searching for:', query);
 }
 const debouncedSearchHandler = debounce(debouncedSearch, 1000);
-const inputElement = document.getElementById('search-input');
-inputElement.addEventListener('input', event => {
-  debouncedSearchHandler(event.target.value);
-});
+// const inputElement = document.getElementById('search-input');
+// inputElement.addEventListener('input', event => {
+//   debouncedSearchHandler(event.target.value);
+// });
 
 /**
  * TASK 5 Implementing Throttle Function
@@ -138,4 +138,65 @@ function onScroll() {
   console.log('Scroll Event Time:', new Date().getSeconds());
 }
 const throttledScrollHandler = throttle(onScroll, 2000);
-window.addEventListener('scroll', throttledScrollHandler);
+// window.addEventListener('scroll', throttledScrollHandler);
+
+/**
+ * TASK 6
+ */
+function multiply(a, b, c) {
+  return a * b * c;
+}
+
+function partialTest(...args) {
+  return args.join(', ');
+}
+
+// '_' - used for placeholder
+const curry = (func, argAmount) => {
+  const PLACEHOLDER_SIGN = '_';
+  if (
+    typeof func !== 'function' ||
+    typeof argAmount !== 'number' ||
+    argAmount < 0
+  ) {
+    throw new Error('Bad Argument');
+  }
+
+  const argumentsList = [];
+  const cbCurry = nextArg => {
+    if (
+      argumentsList.length === argAmount &&
+      argumentsList.includes(PLACEHOLDER_SIGN)
+    ) {
+      const placeholderIndex = argumentsList.indexOf(PLACEHOLDER_SIGN);
+      argumentsList[placeholderIndex] = nextArg;
+    } else if (argumentsList.length < argAmount) {
+      argumentsList.push(nextArg);
+    }
+
+    if (
+      argumentsList.length === argAmount &&
+      !argumentsList.includes(PLACEHOLDER_SIGN)
+    ) {
+      return func(...argumentsList);
+    }
+    return cbCurry;
+  };
+
+  return cbCurry;
+};
+const curriedMultiply = curry(multiply, 3);
+const step1 = curriedMultiply(2);
+const step2 = step1(3);
+const result = step2(4);
+// console.log('Result:', result); // Expected: 24
+
+const partialCurryTest = curry(partialTest, 5);
+partialCurryTest('first');
+partialCurryTest('_');
+partialCurryTest('second');
+partialCurryTest('third');
+partialCurryTest('_');
+partialCurryTest('fourth');
+const partialCurryResult = partialCurryTest('fifth');
+// console.log('partialCurryResult', partialCurryResult);
