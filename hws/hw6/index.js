@@ -60,3 +60,24 @@ const highlightKeywords = (templateString, keywords) => {
 
 const highlighted = highlightKeywords(template, keywords);
 // console.log(highlighted);
+
+/**
+ * Task 3
+ */
+
+const multiline = str => {
+  let result = '';
+  str
+    .join('')
+    .trim()
+    .split('\n')
+    .forEach((item, idx) => (result += `${idx + 1} ${item} \n`));
+  return result;
+};
+
+const code = multiline`  
+function add(a, b) {  
+      return a + b; 
+}  
+`;
+// console.log(code);
