@@ -75,6 +75,7 @@
 // console.log({} + 1);
 // console.log([{}, {}] + 1);
 // console.log(+[{}, 'd'] + 1);
+// console.log(!![]);
 
 /**
  * Symbol.toPrimitive
