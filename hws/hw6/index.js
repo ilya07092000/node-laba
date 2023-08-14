@@ -62,9 +62,8 @@ const highlighted = highlightKeywords(template, keywords);
 // console.log(highlighted);
 
 /**
- * Task 3
+ * Task 3 Multiline Tagged Template
  */
-
 const multiline = str => {
   let result = '';
   str
@@ -83,7 +82,7 @@ function add(a, b) {
 // console.log(code);
 
 /**
- * TASK 4
+ * TASK 4 Implementing Debounce Function
  */
 const debounce = (func, timeout) => {
   if (
@@ -109,3 +108,34 @@ const inputElement = document.getElementById('search-input');
 inputElement.addEventListener('input', event => {
   debouncedSearchHandler(event.target.value);
 });
+
+/**
+ * TASK 5 Implementing Throttle Function
+ */
+const throttle = (func, timeout) => {
+  if (
+    typeof func !== 'function' ||
+    typeof timeout !== 'number' ||
+    timeout < 0
+  ) {
+    throw new Error('Bad Argument');
+  }
+
+  let timer = null;
+  const cbFunc = args => {
+    timer = null;
+    func(args);
+  };
+
+  return args => {
+    if (!timer) {
+      timer = setTimeout(() => cbFunc(args), timeout);
+    }
+  };
+};
+
+function onScroll() {
+  console.log('Scroll Event Time:', new Date().getSeconds());
+}
+const throttledScrollHandler = throttle(onScroll, 2000);
+window.addEventListener('scroll', throttledScrollHandler);
