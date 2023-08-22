@@ -76,6 +76,13 @@
 // console.log([{}, {}] + 1);
 // console.log(+[{}, 'd'] + 1);
 // console.log(!![]);
+// console.log(1 + true);
+// console.log(1 + false);
+// console.log('1' + false);
+// console.log(null + false);
+// console.log(undefined + false);
+// console.log({} + {});
+// console.log({} == {});
 
 /**
  * Symbol.toPrimitive
