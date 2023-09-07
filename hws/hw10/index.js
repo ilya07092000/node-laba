@@ -6,13 +6,12 @@ const getUniqueId = () =>
  */
 /**
  * @classdesc Abstract class representing a book.
- * @class
  * @constructor
- * @param{string} title - The title of the book.
- * @param{string} author - The author of the book.
- * @param{string} isbn - The isbn of the book.
- * @param{number} price - The price of the book.
- * @param{boolean} availability - The availability of the book.
+ * @param {string} title - The title of the book.
+ * @param {string} author - The author of the book.
+ * @param {string} isbn - The isbn of the book.
+ * @param {number} price - The price of the book.
+ * @param {boolean} availability - The availability of the book.
  */
 class Book {
   #id;
@@ -26,21 +25,33 @@ class Book {
     this.#id = getUniqueId();
   }
 
+  /**
+   * Print Genre Description According to the book genre
+   * @return {void}
+   */
   printGenreDescription() {
     throw new Error('Method is not implemented');
   }
 
+  /**
+   * Print Gengre Overview According to the book genre
+   * @return {void}
+   */
   printGenreOverview() {
     throw new Error('Method is not implemented');
   }
 
+  /**
+   * @type {number}
+   */
   get id() {
     return this.#id;
   }
 }
 
 /**
- * @classdesc Abstract class representing a fiction book.
+ * @classdesc class representing a fiction book.
+ * @extends Book
  */
 class FictionBook extends Book {
   printGenreDescription() {
@@ -53,7 +64,8 @@ class FictionBook extends Book {
 }
 
 /**
- * @classdesc Abstract class representing a horror book.
+ * @classdesc class representing a horror book.
+ * @extends Book
  */
 class HorrorBook extends Book {
   printGenreDescription() {
@@ -70,7 +82,8 @@ class HorrorBook extends Book {
 }
 
 /**
- * @classdesc Abstract class representing a thriller book.
+ * @classdesc class representing a thriller book.
+ * @extends Book
  */
 class ThrillerBook extends Book {
   printGenreDescription() {
@@ -82,6 +95,12 @@ class ThrillerBook extends Book {
   }
 }
 
+/**
+ * @classdesc class representing a user.
+ * @constructor
+ * @param {string} name - The name of the user.
+ * @param {string} email - The email of the user.
+ */
 class User {
   #id;
 
@@ -91,11 +110,19 @@ class User {
     this.#id = getUniqueId();
   }
 
+  /**
+   * @type {number}
+   */
   get id() {
     return this.#id;
   }
 }
 
+/**
+ * @classdesc class representing a card.
+ * @constructor
+ * @param {number} userId - The user id of the cart.
+ */
 class Cart {
   #id;
   #items;
@@ -106,6 +133,11 @@ class Cart {
     this.userId = userId;
   }
 
+  /**
+   * Adds new item to the card
+   * @param {Object} item - book which you want to add in the card.
+   * @return {void}
+   */
   addItem(item) {
     if (!item?.availability) {
       throw new Error(`Item with id ${item.id} is not available`);
@@ -113,6 +145,11 @@ class Cart {
     this.#items.push(item);
   }
 
+  /**
+   * Removes item from the card
+   * @param {Object} item - book which you want to remove from the card.
+   * @return {void}
+   */
   removeItem(item) {
     const itemIdx = this.#items.findIndex(currItem => currItem.id === item.id);
     if (itemIdx === -1) {
@@ -121,10 +158,18 @@ class Cart {
     this.#items.splice(itemIdx, 1);
   }
 
+  /**
+   * Calculate total price of all items
+   * @returns {number} - total price
+   */
   getTotalPrice() {
     return this.#items.reduce((acc, item) => acc + item.price, 0);
   }
 
+  /**
+   * Make Description String
+   * @returns {string} - description string of items in the card
+   */
   getDescription() {
     return `${this.#items.reduce(
       (acc, item, idx) => `${acc}${idx === 0 ? '' : ','} ${item?.title}`,
@@ -132,15 +177,27 @@ class Cart {
     )}`;
   }
 
+  /**
+   * @type {Object[]} - items in the cart
+   */
   get items() {
     return this.#items;
   }
 
+  /**
+   * @type {number}
+   */
   get id() {
     return this.#id;
   }
 }
 
+/**
+ * @classdesc class representing a card.
+ * @constructor
+ * @param {Object} user - The user instance who created the order.
+ * @param {Object} cart - The card instance which tied to the order.
+ */
 class Order {
   #cart;
   #id;
@@ -152,10 +209,17 @@ class Order {
     this.#id = getUniqueId();
   }
 
+  /**
+   * @type {Object[]} - items in the cart
+   */
   getOrderItems() {
     return this.#cart.items;
   }
 
+  /**
+   * Print Information About Order In Console
+   * @return {void}
+   */
   printOrderInfo() {
     console.log('*******');
     console.group();
@@ -167,6 +231,9 @@ class Order {
     console.log('*******');
   }
 
+  /**
+   * @type {number}
+   */
   get id() {
     return this.#id;
   }
