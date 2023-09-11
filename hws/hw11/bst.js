@@ -74,78 +74,78 @@ class BinarySearchTree {
       }
     }
   }
+
+  bsftTraversal() {
+    if (!this.root) {
+      return [];
+    }
+
+    const stack = [this.root];
+    const result = [];
+
+    while (stack.length > 0) {
+      const node = stack.pop();
+      result.push(node.value);
+
+      if (node.left) {
+        stack.push(node.left);
+      }
+
+      if (node.right) {
+        stack.push(node.right);
+      }
+    }
+    return result;
+  }
+
+  dfsPreOrder() {
+    const result = [];
+
+    const traverse = node => {
+      result.push(node.value);
+      if (node.left) {
+        traverse(node.left);
+      }
+      if (node.right) {
+        traverse(node.right);
+      }
+    };
+    traverse(this.root);
+    return result;
+  }
+
+  dfsPostOrder() {
+    const result = [];
+
+    const traverse = node => {
+      if (node.left) {
+        traverse(node.left);
+      }
+      if (node.right) {
+        traverse(node.right);
+      }
+      result.push(node.value);
+    };
+    traverse(this.root);
+    return result;
+  }
+
+  dfsInOrder() {
+    const result = [];
+
+    const traverse = node => {
+      if (node.left) {
+        traverse(node.left);
+      }
+      result.push(node.value);
+      if (node.right) {
+        traverse(node.right);
+      }
+    };
+    traverse(this.root);
+    return result;
+  }
 }
-
-const bsftTraversal = root => {
-  if (!root) {
-    throw new Error('Bad Argument');
-  }
-
-  const stack = [root];
-  const result = [];
-
-  while (stack.length > 0) {
-    const node = stack.pop();
-    result.push(node.value);
-
-    if (node.left) {
-      stack.push(node.left);
-    }
-
-    if (node.right) {
-      stack.push(node.right);
-    }
-  }
-  return result;
-};
-
-const dfsPreOrder = root => {
-  const result = [];
-
-  const traverse = node => {
-    result.push(node.value);
-    if (node.left) {
-      traverse(node.left);
-    }
-    if (node.right) {
-      traverse(node.right);
-    }
-  };
-  traverse(root);
-  return result;
-};
-
-const dfsPostOrder = root => {
-  const result = [];
-
-  const traverse = node => {
-    if (node.left) {
-      traverse(node.left);
-    }
-    if (node.right) {
-      traverse(node.right);
-    }
-    result.push(node.value);
-  };
-  traverse(root);
-  return result;
-};
-
-const dfsInOrder = root => {
-  const result = [];
-
-  const traverse = node => {
-    if (node.left) {
-      traverse(node.left);
-    }
-    result.push(node.value);
-    if (node.right) {
-      traverse(node.right);
-    }
-  };
-  traverse(root);
-  return result;
-};
 
 const myTree = new BinarySearchTree();
 myTree.insert(10);
@@ -162,9 +162,10 @@ myTree.insert(1);
 myTree.insert(2);
 myTree.insert(3);
 myTree.insert(213);
-console.log('myTree', myTree);
-console.log(myTree.getNodeByValue(12));
-console.log(bsftTraversal(myTree.root));
-console.log(dfsPreOrder(myTree.root));
-console.log(dfsPostOrder(myTree.root));
-console.log(dfsInOrder(myTree.root));
+
+// console.log('myTree', myTree);
+// console.log(myTree.getNodeByValue(12));
+// console.log(myTree.bsftTraversal());
+// console.log(myTree.dfsPreOrder());
+// console.log(myTree.dfsPostOrder());
+// console.log(myTree.dfsInOrder());
