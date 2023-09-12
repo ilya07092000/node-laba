@@ -77,7 +77,7 @@ class Graph {
     return Array.from(visited);
   }
 
-  bst(vertex) {
+  bfs(vertex) {
     const visited = new Set();
     if (!(vertex in this.adjMatrix)) {
       return visited;
@@ -119,5 +119,9 @@ graph.addEdge('d', 'b');
 // graph.removeVertex('a');
 
 // console.log(graph);
-console.log(graph.dfs('a'));
-console.log(graph.bst('a'));
+// console.log(graph.dfs('a'));
+// console.log(graph.bfs('a'));
+
+module.exports = {
+  Graph,
+};
