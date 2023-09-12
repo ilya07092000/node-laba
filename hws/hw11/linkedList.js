@@ -112,3 +112,5 @@ myLinkedList.delete(10);
 // myLinkedList.print();
 
 // console.log(myLinkedList.getByValue(6));
+
+module.exports = {LinkedList};
