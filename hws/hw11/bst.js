@@ -169,3 +169,7 @@ myTree.insert(213);
 // console.log(myTree.dfsPreOrder());
 // console.log(myTree.dfsPostOrder());
 // console.log(myTree.dfsInOrder());
+
+module.exports = {
+  BinarySearchTree,
+};
