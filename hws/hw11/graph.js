@@ -58,6 +58,9 @@ class Graph {
     return false;
   }
 
+  /**
+   * Depth-first search
+   */
   dfs(vertex) {
     const visited = new Set();
     if (!(vertex in this.adjMatrix)) {
@@ -77,6 +80,9 @@ class Graph {
     return Array.from(visited);
   }
 
+  /**
+   * Breadth-first search
+   */
   bfs(vertex) {
     const visited = new Set();
     if (!(vertex in this.adjMatrix)) {
@@ -115,10 +121,12 @@ graph.addEdge('c', 'd');
 graph.addEdge('e', 'd');
 graph.addEdge('d', 'b');
 
+// console.log(graph); // graph
+
 // graph.removeEdge('e', 'd');
 // graph.removeVertex('a');
+// console.log(graph); // graph after remove edge and vertex
 
-// console.log(graph);
 // console.log(graph.dfs('a'));
 // console.log(graph.bfs('a'));
 

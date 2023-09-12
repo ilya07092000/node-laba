@@ -103,13 +103,13 @@ myLinkedList.insert(8);
 myLinkedList.insert(9);
 myLinkedList.insert(10);
 
-// myLinkedList.print();
+// myLinkedList.print(); // inital linked list
 
 myLinkedList.delete(5);
 myLinkedList.delete(1);
 myLinkedList.delete(10);
 
-// myLinkedList.print();
+// myLinkedList.print(); // linked list after remove three elements
 
 // console.log(myLinkedList.getByValue(6));
 
