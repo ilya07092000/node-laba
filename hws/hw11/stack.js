@@ -14,6 +14,10 @@ class Stack {
   peek() {
     return this.items[this.items.length - 1];
   }
+
+  isEmpty() {
+    return !this.items.length;
+  }
 }
 
 const myStack = new Stack();
@@ -25,3 +29,7 @@ console.log(myStack.peek());
 console.log(myStack);
 console.log(myStack.pop());
 console.log(myStack);
+
+module.exports = {
+  Stack,
+};
