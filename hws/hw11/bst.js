@@ -11,6 +11,9 @@ class BinarySearchTree {
     this.root = root;
   }
 
+  /**
+   * Add new node to the binary tree
+   */
   insert(value) {
     const node = new Node(value);
     if (this.root === null) {
@@ -29,6 +32,10 @@ class BinarySearchTree {
     return true;
   }
 
+  /**
+   * return node to which value should be added according to
+   * bst rules
+   */
   findInsertionNode(nodeToInsert) {
     let currNode = this.root;
     if (!currNode) {
@@ -56,6 +63,10 @@ class BinarySearchTree {
     }
   }
 
+  /**
+   * return node with corresponding value
+   * otherwise return null
+   */
   getNodeByValue(value) {
     let currNode = this.root;
     while (true) {
@@ -75,6 +86,9 @@ class BinarySearchTree {
     }
   }
 
+  /**
+   * Breadth-first search
+   */
   bsftTraversal() {
     if (!this.root) {
       return [];
@@ -98,6 +112,10 @@ class BinarySearchTree {
     return result;
   }
 
+  /**
+   * depth first search (pre-order)
+   * firstly check root, then go to the left, then to the right
+   */
   dfsPreOrder() {
     const result = [];
 
@@ -114,6 +132,10 @@ class BinarySearchTree {
     return result;
   }
 
+  /**
+   * depth first search (post-order)
+   * firstly check left, then right, then root
+   */
   dfsPostOrder() {
     const result = [];
 
@@ -130,6 +152,10 @@ class BinarySearchTree {
     return result;
   }
 
+  /**
+   * depth first search (in-order)
+   * firstly check left, then root, then right
+   */
   dfsInOrder() {
     const result = [];
 
@@ -163,8 +189,7 @@ myTree.insert(2);
 myTree.insert(3);
 myTree.insert(213);
 
-// console.log('myTree', myTree);
-// console.log(myTree.getNodeByValue(12));
+// console.log(myTree.getNodeByValue(12)); // return node with value 12
 // console.log(myTree.bsftTraversal());
 // console.log(myTree.dfsPreOrder());
 // console.log(myTree.dfsPostOrder());
