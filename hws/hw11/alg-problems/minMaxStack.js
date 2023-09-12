@@ -1,5 +1,9 @@
 const {Stack} = require('../stack');
 
+/**
+ * min max stack by creating addinitional stack
+ * and storing min max values in form of [min, max] records
+ */
 class MinMaxStack {
   constructor() {
     this.minMaxStack = new Stack();

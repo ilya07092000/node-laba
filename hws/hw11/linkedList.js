@@ -12,6 +12,10 @@ class LinkedList {
     this.length = 0;
   }
 
+  /**
+   * Insert new node
+   * O(1)
+   */
   insert(value) {
     const node = new Node(value);
     if (!this.head) {
@@ -25,6 +29,10 @@ class LinkedList {
     return true;
   }
 
+  /**
+   * Delete node by value
+   * O(n)
+   */
   delete(value) {
     if (!this.length) {
       return false;
@@ -62,6 +70,10 @@ class LinkedList {
     return false;
   }
 
+  /**
+   * Get node by value
+   * O(n)
+   */
   getByValue(value) {
     if (this.length === 0) {
       return false;

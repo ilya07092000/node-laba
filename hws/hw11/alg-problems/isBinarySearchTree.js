@@ -1,7 +1,7 @@
 const {BinarySearchTree} = require('../bst');
 
 /**
- * dfs pre order
+ * traverse tree and define whether it is bst or not using dfs pre order alg
  */
 const isBinarySearchTree = root => {
   if (!root) {

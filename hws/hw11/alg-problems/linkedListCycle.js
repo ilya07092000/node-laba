@@ -1,5 +1,9 @@
 const {LinkedList} = require('../linkedList');
 
+/**
+ * define whether LL is cycle or not,
+ * using floyd's cycle detection algorithm
+ */
 const isCycleLinkedList = head => {
   let slowPointer = head;
   let fastPointer = head;

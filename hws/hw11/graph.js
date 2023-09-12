@@ -6,6 +6,9 @@ class Graph {
     this.adjMatrix = {};
   }
 
+  /**
+   * Add new vertex to graph
+   */
   addVertex(vertex) {
     if (!(vertex in this.adjMatrix)) {
       this.adjMatrix[vertex] = [];
@@ -14,6 +17,9 @@ class Graph {
     return false;
   }
 
+  /**
+   * Add new edge to graph
+   */
   addEdge(vertex1, vertex2) {
     if (
       vertex1 &&
@@ -28,6 +34,9 @@ class Graph {
     return false;
   }
 
+  /**
+   * remove edge
+   */
   removeEdge(vertex1, vertex2) {
     if (
       vertex1 &&
@@ -46,6 +55,9 @@ class Graph {
     return false;
   }
 
+  /**
+   * Remove vertex
+   */
   removeVertex(vertex) {
     if (vertex in this.adjMatrix) {
       this.adjMatrix[vertex].forEach(v => {
@@ -60,6 +72,7 @@ class Graph {
 
   /**
    * Depth-first search
+   * O(V+E) - vertices, edges
    */
   dfs(vertex) {
     const visited = new Set();
@@ -82,6 +95,7 @@ class Graph {
 
   /**
    * Breadth-first search
+   * O(V+E) - vertices, edges
    */
   bfs(vertex) {
     const visited = new Set();

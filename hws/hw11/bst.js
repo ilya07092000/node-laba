@@ -13,6 +13,8 @@ class BinarySearchTree {
 
   /**
    * Add new node to the binary tree
+   * O(n) - worst
+   * O(log n) - balanced
    */
   insert(value) {
     const node = new Node(value);
@@ -33,8 +35,7 @@ class BinarySearchTree {
   }
 
   /**
-   * return node to which value should be added according to
-   * bst rules
+   * return node to which value should be added according to bst rules
    */
   findInsertionNode(nodeToInsert) {
     let currNode = this.root;
@@ -66,6 +67,8 @@ class BinarySearchTree {
   /**
    * return node with corresponding value
    * otherwise return null
+   * O(n) - the worst one
+   * O(log n) - in balanced tree
    */
   getNodeByValue(value) {
     let currNode = this.root;
@@ -88,6 +91,7 @@ class BinarySearchTree {
 
   /**
    * Breadth-first search
+   * O(n)
    */
   bsftTraversal() {
     if (!this.root) {
@@ -115,6 +119,7 @@ class BinarySearchTree {
   /**
    * depth first search (pre-order)
    * firstly check root, then go to the left, then to the right
+   * O(n)
    */
   dfsPreOrder() {
     const result = [];
@@ -135,6 +140,7 @@ class BinarySearchTree {
   /**
    * depth first search (post-order)
    * firstly check left, then right, then root
+   * O(n)
    */
   dfsPostOrder() {
     const result = [];
@@ -155,6 +161,7 @@ class BinarySearchTree {
   /**
    * depth first search (in-order)
    * firstly check left, then root, then right
+   * O(n)
    */
   dfsInOrder() {
     const result = [];
