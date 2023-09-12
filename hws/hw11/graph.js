@@ -1,5 +1,5 @@
 /**
- * graph was implemented with help of adjacency matrix
+ * graph was implemented with help of adjacency list
  */
 class Graph {
   constructor() {
