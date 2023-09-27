@@ -45,19 +45,20 @@
 function myJSONParse(jsonString) {
   const result = {};
   const regExp =
-    /((?<key>"\w+"):\s*((?<value>"[^"]+"|\d+)|(?<object>{.*}))(,?\s*)+)/gi;
+    /((?<key>"\w+"):\s*((?<value>"[^"]+"|\d+)|(?<object>{.*}(?=,|}))|(?<array>\[.*\])))/gi;
   let currentStep;
 
   while ((currentStep = regExp.exec(jsonString))) {
-    console.log(currentStep.groups);
-    let {key, value, object} = currentStep.groups;
-    result[key] = value || object;
+    // console.log(currentStep.groups);
+    let {key, value, object, array} = currentStep.groups;
+    result[key] = value || object || array;
   }
 
   return result;
 }
 
+// const jsonString = '{"name": "John", "age": 30, "city": "New York", "innerObj": { "nameInner": "test", "otherTest": { "value2": 123 } }}';
 const jsonString =
-  '{"name": "John", "age": 30, "city": "New York", "innerObj": { "nameInner": "test" }}';
+  '{"name": "John", "age": 30, "city": "New York", "innerObj": { "nameInner": "test", "otherTest": { "value2": 123 } }, "innerArray": [1, 2, 3], "test": 123}';
 const jsonObject = myJSONParse(jsonString);
 console.log('jsonObject', jsonObject);
