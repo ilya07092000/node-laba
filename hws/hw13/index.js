@@ -45,13 +45,21 @@
 function myJSONParse(jsonString) {
   const result = {};
   const regExp =
-    /((?<key>"\w+"):\s*((?<value>"[^"]+"|\d+)|(?<object>{.*}(?=,|}))|(?<array>\[.*\])))/gi;
+    /((?<key>"\w+"):\s*((?<value>"[^"]+"|\d+)|(?<object>{.*}(?=,|\s{0,1}}))|(?<array>\[.*\])))/gi;
   let currentStep;
 
   while ((currentStep = regExp.exec(jsonString))) {
     // console.log(currentStep.groups);
     let {key, value, object, array} = currentStep.groups;
-    result[key] = value || object || array;
+
+    if (object) {
+      result[key] = myJSONParse(object);
+    } else if (array) {
+      let test = array.replace(/^\[|\]$/g, '').split(',');
+      result[key] = test;
+    } else {
+      result[key] = value;
+    }
   }
 
   return result;
