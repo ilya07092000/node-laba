@@ -44,12 +44,14 @@
 
 function myJSONParse(jsonString) {
   const result = {};
-  const regExp = /((?<key>"\w+"):\s*(?<value>"[^"]+"|\d+)(,?\s*)+)/gi;
+  const regExp =
+    /((?<key>"\w+"):\s*((?<value>"[^"]+"|\d+)|(?<object>{.*}))(,?\s*)+)/gi;
   let currentStep;
 
   while ((currentStep = regExp.exec(jsonString))) {
-    let {key, value} = currentStep.groups;
-    result[key] = value;
+    console.log(currentStep.groups);
+    let {key, value, object} = currentStep.groups;
+    result[key] = value || object;
   }
 
   return result;
