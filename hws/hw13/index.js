@@ -44,21 +44,24 @@
 
 function myJSONParse(jsonString) {
   const result = {};
+  const quotationMarksRegex = /^"|"$/g;
   const regExp =
-    /((?<key>"\w+"):\s*((?<value>"[^"]+"|\d+)|(?<object>\{(?:[^{}]+|\{(?:[^}{]+|\{[^}{]*\})*\})*\}(?=,|\s{0,1}}))|(?<array>\[.*?\])))/gi;
+    /((?<key>"\w+"):\s*((?<string>"[^"]+")|(?<number>\d+)|(?<object>\{(?:[^{}]+|\{(?:[^}{]+|\{[^}{]*\})*\})*\}(?=,|\s{0,1}}))|(?<array>\[.*?\])))/gi;
   let currentStep;
 
   while ((currentStep = regExp.exec(jsonString))) {
-    let {key, value, object, array} = currentStep.groups;
-    const formattedKey = key.replace(/^"|"$/g, ''); // remove quotation marks
+    let {key, string, number, object, array} = currentStep.groups;
+    const formattedKey = key.replace(quotationMarksRegex, ''); // remove quotation marks
     let resultValue = undefined;
 
     if (object) {
       resultValue = myJSONParse(object);
     } else if (array) {
       resultValue = array.replace(/^\[|\]$/g, '').split(',');
-    } else {
-      resultValue = value;
+    } else if (number) {
+      resultValue = +number;
+    } else if (string) {
+      resultValue = string.replace(quotationMarksRegex, '');
     }
 
     result[formattedKey] = resultValue;
