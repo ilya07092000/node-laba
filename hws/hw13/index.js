@@ -49,16 +49,19 @@ function myJSONParse(jsonString) {
   let currentStep;
 
   while ((currentStep = regExp.exec(jsonString))) {
-    // console.log(currentStep.groups);
     let {key, value, object, array} = currentStep.groups;
+    const formattedKey = key.replace(/^"|"$/g, ''); // remove quotation marks
+    let resultValue = undefined;
+
     if (object) {
-      result[key] = myJSONParse(object);
+      resultValue = myJSONParse(object);
     } else if (array) {
-      let test = array.replace(/^\[|\]$/g, '').split(',');
-      result[key] = test;
+      resultValue = array.replace(/^\[|\]$/g, '').split(',');
     } else {
-      result[key] = value;
+      resultValue = value;
     }
+
+    result[formattedKey] = resultValue;
   }
 
   return result;
