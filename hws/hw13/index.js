@@ -49,15 +49,14 @@ const booleanRegexp = /\btrue\b|\bfalse\b/;
 const objectRegexp = /\{(?:[^{}]+|\{(?:[^}{]+|\{[^}{]*\})*\})*\}/;
 const arrayRegexp = /\[.*?\]/;
 const defineDataDypeRegexp = new RegExp(
-  `(?<string>${stringRegexp.source})|(?<number>${numberRegexp.source})|(?<nullValue>${nullValueRegexp.source})|(?<boolean>${booleanRegexp.source})|(?<object>${objectRegexp.source})|(?<array>${arrayRegexp.source})`,
-  'g',
+  `(?<object>${objectRegexp.source})|(?<string>${stringRegexp.source})|(?<number>${numberRegexp.source})|(?<nullValue>${nullValueRegexp.source})|(?<boolean>${booleanRegexp.source})|(?<array>${arrayRegexp.source})`,
 );
 
 function myJSONParse(jsonString) {
   const result = {};
   const quotationMarksRegex = /^"|"$/g;
   const jsonKeyValuesRegexp = new RegExp(
-    `((?<key>"\\w+"):\s*(${defineDataDypeRegexp.source}))`,
+    `((?<key>"\\w+"):\\s*(${defineDataDypeRegexp.source}))`,
     'gi',
   );
   let currentStep;
