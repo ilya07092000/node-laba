@@ -46,7 +46,7 @@ const stringRegexp = /"[^"]+"/;
 const numberRegexp = /\d+/;
 const nullValueRegexp = /\bnull\b/;
 const booleanRegexp = /\btrue\b|\bfalse\b/;
-const objectRegexp = /\{(?:[^{}]+|\{(?:[^}{]+|\{[^}{]*\})*\})*\}(?=,|\s{0,1}})/;
+const objectRegexp = /\{(?:[^{}]+|\{(?:[^}{]+|\{[^}{]*\})*\})*\}/;
 const arrayRegexp = /\[.*?\]/;
 const defineDataDypeRegexp = new RegExp(
   `(?<string>${stringRegexp.source})|(?<number>${numberRegexp.source})|(?<nullValue>${nullValueRegexp.source})|(?<boolean>${booleanRegexp.source})|(?<object>${objectRegexp.source})|(?<array>${arrayRegexp.source})`,
