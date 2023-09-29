@@ -42,14 +42,27 @@
 //   ),
 // );
 
+const stringRegexp = /"[^"]+"/;
+const numberRegexp = /\d+/;
+const nullValueRegexp = /\bnull\b/;
+const booleanRegexp = /\btrue\b|\bfalse\b/;
+const objectRegexp = /\{(?:[^{}]+|\{(?:[^}{]+|\{[^}{]*\})*\})*\}(?=,|\s{0,1}})/;
+const arrayRegexp = /\[.*?\]/;
+const defineDataDypeRegexp = new RegExp(
+  `(?<string>${stringRegexp.source})|(?<number>${numberRegexp.source})|(?<nullValue>${nullValueRegexp.source})|(?<boolean>${booleanRegexp.source})|(?<object>${objectRegexp.source})|(?<array>${arrayRegexp.source})`,
+  'g',
+);
+
 function myJSONParse(jsonString) {
   const result = {};
   const quotationMarksRegex = /^"|"$/g;
-  const regExp =
-    /((?<key>"\w+"):\s*((?<string>"[^"]+")|(?<number>\d+)|(?<nullValue>\bnull\b)|(?<boolean>\btrue\b|\bfalse\b)|(?<object>\{(?:[^{}]+|\{(?:[^}{]+|\{[^}{]*\})*\})*\}(?=,|\s{0,1}}))|(?<array>\[.*?\])))/gi;
+  const jsonKeyValuesRegexp = new RegExp(
+    `((?<key>"\\w+"):\s*(${defineDataDypeRegexp.source}))`,
+    'gi',
+  );
   let currentStep;
 
-  while ((currentStep = regExp.exec(jsonString))) {
+  while ((currentStep = jsonKeyValuesRegexp.exec(jsonString))) {
     let {key, string, number, object, array, boolean, nullValue} =
       currentStep.groups;
     const formattedKey = key.replace(quotationMarksRegex, ''); // remove quotation marks
