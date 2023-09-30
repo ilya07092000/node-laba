@@ -8,18 +8,24 @@ const booleanRegexp = /\btrue\b|\bfalse\b/;
 const objectRegexp = /\{(?:[^{}]+|\{(?:[^}{]+|\{[^}{]*\})*\})*\}/;
 const arrayRegexp = /\[.*?\]/;
 const quotationMarksRegex = /^"|"$/g;
+const jsonRegexp = /^\{("\w+":\s{0,1}("[\d+\w+\s+.+?]+"|.+?),?\s?)+\}$/gi;
 
 /**
  * MATCH DIFFERENT DATA TYPES INTO SEPARATE GROUPS
  */
 const defineDataDypeRegexp = new RegExp(
-  `(?<object>${objectRegexp.source})|(?<string>${stringRegexp.source})|(?<number>${numberRegexp.source})|(?<nullValue>${nullValueRegexp.source})|(?<boolean>${booleanRegexp.source})|(?<array>${arrayRegexp.source})`,
+  `(?<object>${objectRegexp.source})|(?<string>${stringRegexp.source})|(?<number>${numberRegexp.source})|(?<nullValue>${nullValueRegexp.source})|(?<boolean>${booleanRegexp.source})|(?<array>${arrayRegexp.source})|(?<other>[a-z,0-9]+?(?=(,)))`,
 );
 
 /**
  * JSON PARSER
  */
 function myJSONParse(jsonString) {
+  const isValidJson = jsonString.match(jsonRegexp)?.length;
+  if (!isValidJson) {
+    throw new Error(`JSON string - "${jsonString}" is not valid`);
+  }
+
   const result = {};
   const jsonKeyValuesRegexp = new RegExp(
     `((?<key>"\\w+"):\\s*(${defineDataDypeRegexp.source}))`,
@@ -92,5 +98,11 @@ const handleValues = groups => {
 
 const jsonString =
   '{"name":"John Doe","age":30,"is_student":false,"address":{"innerObj":{"innerArray":[1, 2, 3]},"street":"123 Main St","city":"Anytown","state":"CA","postal_code":"12345"},"favorite_numbers":[7,42,101],"grades":{"math":95,"science":88,"history":75},"contact":null,"testArray":[{"key":"value"},1,"1", 21]]}';
-const jsonObject = myJSONParse(jsonString);
-console.log('jsonObject', jsonObject);
+console.log(myJSONParse(jsonString));
+
+const infinityIssue =
+  '{"name":"John Doe","age":30,"is_student":Infinity,"address":{"innerObj":{"innerArray":[1, 2, 3]},"street":"123 Main St","city":"Anytown","state":"CA","postal_code":"12345"},"favorite_numbers":[7,42,101],"grades":{"math":95,"science":88,"history":75},"contact":null,"testArray":[{"key":"value"},1,"1", 21]]}';
+// console.log(myJSONParse(infinityIssue));
+
+const syntaxIssue = '{"name" 123';
+// console.log(myJSONParse(syntaxIssue));
